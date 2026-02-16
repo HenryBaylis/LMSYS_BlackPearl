@@ -11,6 +11,6 @@ gemma_path_ut=../model_save_or/v7_ut_gemma_v7_64r128_ddgemma2_16bit/epoch_0_mode
 
 fold=$1
 echo run:${fold}
-# 微调gemma-9b
+# Fine-tune gemma-9b
 sh run_fintune_16bit.sh orgemma2fold${fold} ${gemma_path} ${gemma_path_ut}
 

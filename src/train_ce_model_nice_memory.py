@@ -402,7 +402,7 @@ def main():
             all_labels.append(label)
             step_bar.update()
 
-        # 将各 GPU 上的结果汇总到主进程
+        # Gather results from each GPU onto the main process
         all_outputs = torch.cat(all_outputs)
         all_labels = torch.cat(all_labels)
 
@@ -412,7 +412,7 @@ def main():
         dist.all_gather(gather_list_outputs, all_outputs)
         dist.all_gather(gather_list_labels, all_labels)
 
-        # 只在主进程计算最终结果以避免重复计算
+        # Only compute final result on the main process to avoid redundant computation
         predicts = torch.cat(gather_list_outputs).detach().cpu().numpy().reshape(-1, 3)
         labels = torch.cat(gather_list_labels).detach().cpu().numpy().reshape(-1)
 
@@ -486,7 +486,7 @@ def main():
             total_loss += loss.item()
             if global_step % 10 == 0:
                 time_end = time.time()
-                total_time = time_end - time_start  # 计算运行总时间
+                total_time = time_end - time_start  # Calculate total running time
                 time_start = time_end
                 print_rank_0(
                     f"Beginning of Epoch {epoch + 1}/{args.num_train_epochs}, curr_step:{global_step}/{total_steps} curr_loss {loss.item()} lr:{lr_scheduler.get_last_lr()[0]} use time:{total_time}s",
@@ -519,7 +519,7 @@ def main():
                 #     return
         if args.save_per_epoch == 1:
             save_model(args, model, tokenizer, f"epoch_{epoch}_model")
-        # 保存最后一轮
+        # Save the last epoch
         if epoch == args.num_train_epochs - 1:
             save_model(args, model, tokenizer, f"epoch_{epoch}_model")
         model.tput_timer.update_epoch_count()

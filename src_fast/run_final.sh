@@ -1,6 +1,6 @@
 #!/bin/bash
 set -e
 
-# 合并lora
+# Merge LoRA adapters
 python merge_lora.py
 python run_gptq.py

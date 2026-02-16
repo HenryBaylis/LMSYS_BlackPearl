@@ -24,21 +24,21 @@ def softmax(x):
 
 def softmax_to_logits(softmax_output):
     """
-    从 softmax 输出还原 logits。
+    Recover logits from softmax output.
 
-    参数:
-    softmax_output (numpy.ndarray): softmax 输出的概率分布，二维数组。
+    Parameters:
+    softmax_output (numpy.ndarray): Probability distribution from softmax output, 2D array.
 
-    返回:
-    numpy.ndarray: 还原的 logits，二维数组。
+    Returns:
+    numpy.ndarray: Recovered logits, 2D array.
     """
     if softmax_output.ndim != 2:
         raise ValueError("Input must be a 2D array.")
 
-    # 取对数得到 log-probabilities
+    # Take the logarithm to get log-probabilities
     log_probs = np.log(softmax_output)
 
-    # 减去每行 log-probabilities 的最大值
+    # Subtract the maximum log-probability from each row
     logits = log_probs - np.max(log_probs, axis=1, keepdims=True)
 
     return logits
